@@ -15,6 +15,6 @@ setup(name='intelx',
       author_email='info@intelx.io',
       keywords='intelx intelligence x intelx.io _IntelligenceX IntelligenceX _intelx',
       url='https://github.com/IntelligenceX/SDK/Python',
-      scripts=['cli/intelx.py'],
+      scripts=['intelx/cli/intelx.py'],
       install_requires=['requests', 'pygments', 'termcolor', 'tabulate']
      )
