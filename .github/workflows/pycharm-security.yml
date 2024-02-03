@@ -15,5 +15,3 @@ jobs:
       - uses: actions/checkout@v4
       - name: Run PyCharm Security
         uses: tonybaloney/pycharm-security@master
-        with:
-          path: Python/
