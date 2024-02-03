@@ -2,12 +2,12 @@
 
 intelx.py is a Python command-line utility and API wrapper for intelx.io, made to perform any kind of open-source intelligence.
 
-![](cli/screenshot1.png)
+![](scripts/screenshot1.png)
 
 ## Installation
 ```bash
-git clone https://github.com/IntelligenceX/SDK
-pip3 install SDK/Python
+git clone https://github.com/IntelligenceX/Python
+pip3 install -e . 
 ```
 
 ## Setup
@@ -309,5 +309,5 @@ Here is a table listing the media types, along with their respective IDs.
 
 ## Contribute
 
-Please use the issue tracker at https://github.com/IntelligenceX/SDK/issues to report any bugs, security vulnerabilities or feature requests.
+Please use the issue tracker at https://github.com/IntelligenceX/Python/issues to report any bugs, security vulnerabilities or feature requests.
 
