@@ -1,10 +1,14 @@
-# intelx.py (0.5)
+# intelx.py
 
 intelx.py is a Python command-line utility and API wrapper for intelx.io, made to perform any kind of open-source intelligence.
 
 ![](scripts/screenshot1.png)
 
 ## Installation
+```bash
+pip install "intelx @ git+https://github.com/IntelligenceX/Python"
+```
+
 ```bash
 git clone https://github.com/IntelligenceX/Python
 pip3 install -e . 
