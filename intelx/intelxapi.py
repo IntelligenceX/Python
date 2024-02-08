@@ -14,7 +14,7 @@ class intelx:
     USER_AGENT = ''
 
     # The API key must be always supplied
-    def __init__(self, key, ua='IX-Python/0.6'):
+    def __init__(self, key, ua='IX-Python/0.5'):
         """
         Initialize API by setting the API key.
         """
@@ -242,7 +242,10 @@ class intelx:
         time.sleep(1) # API_ROOT Rate Limit
         r = requests.post(self.API_ROOT + '/intelligent/search', headers=h, json=p)
         if r.status_code == 200:
-            return r.json()['id']
+            if r.json()['status'] == 1:
+                return r.status_code
+            else:
+                return r.json()['id']
         else:
             return r.status_code
 
