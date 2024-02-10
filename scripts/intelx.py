@@ -101,7 +101,10 @@ def pb_search_results_emails(ix, search):
                 print(result['selectorvalue'])
 
 
-if __name__ == '__main__':
+def main(argv=None):
+
+    global search
+    global args
 
     # get the argument parser ready
     parser = argparse.ArgumentParser(
@@ -129,7 +132,7 @@ if __name__ == '__main__':
     parser.add_argument('--capabilities', help="show your account's capabilities", action="store_true")
     parser.add_argument('--stats', help="show stats of search results", action="store_true")
     parser.add_argument('--raw', help="show raw json", action="store_true")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # configure IX & the API key
     if 'INTELX_KEY' in os.environ:
@@ -193,6 +196,7 @@ if __name__ == '__main__':
                 media=media,
                 terminate=terminate
             )
+
         elif args.phonebook:
             if(args.phonebook == 'domains'):
                 targetval = 1
@@ -202,6 +206,7 @@ if __name__ == '__main__':
                 targetval = 3
             else:
                 targetval = 0
+            
             search = pbsearch(
                 ix,
                 args.search,
@@ -215,6 +220,7 @@ if __name__ == '__main__':
                 terminate=terminate,
                 target=targetval
             )
+            return search
 
         if args.raw:
             print(json.dumps(search))
@@ -249,3 +255,6 @@ if __name__ == '__main__':
         print(colored(f"[{rightnow()}] Getting your API capabilities.\n", 'green'))
         capabilities = ix.GET_CAPABILITIES()
         print(highlight(json.dumps(capabilities, indent=4), JsonLexer(), TerminalFormatter()))
+
+if __name__ == "__main__":
+  sys.exit(main())
