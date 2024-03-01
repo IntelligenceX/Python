@@ -83,12 +83,8 @@ To view the full data of a specific search result, specify the item's ID and use
 intelx.py -search 3a4d5699-737c-4d22-8dbd-c5391ce805df --view
 ```
 
-#### Search Phonebook
-```bash
-intelx.py -search cia.gov --phonebook
-```
+#### Extract Email from Phonebook Search
 
-#### Extract email from phonebook search
 ```bash
 intelx.py -search cia.gov --phonebook emails
 ```
