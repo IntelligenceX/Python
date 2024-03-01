@@ -49,11 +49,6 @@ Windows Registry Editor Version 5.00
 
 ## Usage
 
-```bash
-intelx.py -search riseup.net
-```
-
-
 #### Quick search
 ```bash
 intelx.py -search riseup.net
