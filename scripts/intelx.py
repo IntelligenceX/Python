@@ -220,7 +220,6 @@ def main(argv=None):
                 terminate=terminate,
                 target=targetval
             )
-            return search
 
         if args.raw:
             print(json.dumps(search))
