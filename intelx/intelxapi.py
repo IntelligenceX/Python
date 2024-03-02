@@ -243,10 +243,7 @@ class intelx:
         time.sleep(self.API_RATE_LIMIT)
         r = requests.post(self.API_ROOT + '/intelligent/search', headers=h, json=p)
         if r.status_code == 200:
-            if r.json()['status'] == 1:
-                return r.status_code
-            else:
-                return r.json()['id']
+            return r.json()['id']
         else:
             return r.status_code
 
