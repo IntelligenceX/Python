@@ -40,6 +40,12 @@ class intelx:
         if code == 404:
             return "404 | Not Found"
 
+        """
+        Get error string by respective intelx.io status code.
+        """
+        if code == 1:
+            return "1 | Invalid term"
+
     def cleanup_treeview(self, treeview):
         """
         Cleans up treeview output from the API.
@@ -243,6 +249,8 @@ class intelx:
         time.sleep(self.API_RATE_LIMIT)
         r = requests.post(self.API_ROOT + '/intelligent/search', headers=h, json=p)
         if r.status_code == 200:
+            if r.json()['status'] == 1:
+                return r.json()['status']
             return r.json()['id']
         else:
             return r.status_code
