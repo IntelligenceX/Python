@@ -1,7 +1,7 @@
 import pytest
 from intelx import main
 
-@pytest.mark.skip(reason="Enahcement Entry Point")
+# @pytest.mark.skip(reason="Enahcement Entry Point")
 def test_main_not_apikey():
     with pytest.raises(SystemExit) as pytest_wrapped_e:
         main(["-search", "apple.com"])
