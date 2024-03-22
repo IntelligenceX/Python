@@ -32,6 +32,7 @@ class intelx:
         self.API_KEY = key
         self.USER_AGENT = ua
         self.API_RATE_LIMIT = 1
+        self.HEADERS = {'X-Key': self.API_KEY, 'User-Agent': self.USER_AGENT}
 
     def get_error(self, code):
         """
