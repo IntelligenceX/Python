@@ -9,6 +9,7 @@ import time
 import tabulate
 import argparse
 from intelxapi import intelx
+from pyintelx import IdentityService
 from termcolor import colored
 from pygments import highlight
 from pygments.lexers import JsonLexer
@@ -129,6 +130,7 @@ def main(argv=None):
     parser.add_argument('--view', help="show full contents of search results", action="store_true")
     parser.add_argument('--phonebook', help="set the search type to a phonebook search")
     parser.add_argument('--emails', help="show only emails from phonebook results", action="store_true")
+    parser.add_argument('--accounts', help="search only leaked accounts on identity service", action="store_true")
     parser.add_argument('--capabilities', help="show your account's capabilities", action="store_true")
     parser.add_argument('--stats', help="show stats of search results", action="store_true")
     parser.add_argument('--raw', help="show raw json", action="store_true")
@@ -136,10 +138,16 @@ def main(argv=None):
 
     # configure IX & the API key
     if 'INTELX_KEY' in os.environ:
-        ix = intelx(os.environ['INTELX_KEY'])
+        if args.accounts:
+            ix = IdentityService(os.environ['INTELX_KEY'])
+        else:
+            ix = intelx(os.environ['INTELX_KEY'])
 
     elif args.apikey:
-        ix = intelx(args.apikey)
+        if args.accounts:
+            ix_identity = IdentityService(args.apikey)
+        else:
+            ix = intelx(args.apikey)
 
     else:
         exit('No API key specified. Please use the "-apikey" parameter or set the environment variable "INTELX_KEY".')
@@ -182,6 +190,24 @@ def main(argv=None):
             sort = int(args.sort)
         if args.media:
             media = int(args.media)
+
+        if args.accounts:
+            search = IdentityService.export_accounts(
+                    ix,
+                    args.search,
+                    maxresults=maxresults,
+                    buckets=buckets,
+                    # timeout=timeout,
+                    datefrom=datefrom,
+                    dateto=dateto,
+                    terminate=terminate
+            )
+            headers = ["User", "Password", "Password Type", "Source Short"]
+            data = []
+            for block in search:
+                for result in search[block]:
+                    data.append([result['user'], result['password'], result['passwordtype'], result['sourceshort']])
+            print(tabulate.tabulate(sorted(data), headers=headers, tablefmt="fancy_grid"))
 
         if not args.phonebook:
             search = search(

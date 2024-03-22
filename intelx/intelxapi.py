@@ -1,21 +1,21 @@
 #!/usr/bin/env python3
 
 import requests
-import inspect  # DEBUG
-import logging  # DEBUG
-import http.client # DEBUG
+# import inspect  # DEBUG
+# import logging  # DEBUG
+# import http.client # DEBUG
 import time
 import json
 import sys
 import re
 
-http.client.HTTPConnection.debuglevel = 1  # DEBUG
+# http.client.HTTPConnection.debuglevel = 1  # DEBUG
 
-logging.basicConfig()  # DEBUG
-logging.getLogger().setLevel(logging.DEBUG)  # DEBUG
-requests_log = logging.getLogger("requests.packages.urllib3")  # DEBUG
-requests_log.setLevel(logging.DEBUG)  # DEBUG
-requests_log.propagate = True  # DEBUG
+# logging.basicConfig()  # DEBUG
+# logging.getLogger().setLevel(logging.DEBUG)  # DEBUG
+# requests_log = logging.getLogger("requests.packages.urllib3")  # DEBUG
+# requests_log.setLevel(logging.DEBUG)  # DEBUG
+# requests_log.propagate = True  # DEBUG
 
 class intelx:
 
@@ -32,6 +32,7 @@ class intelx:
         self.API_KEY = key
         self.USER_AGENT = ua
         self.API_RATE_LIMIT = 1
+        self.HEADERS = {'X-Key': self.API_KEY, 'User-Agent': self.USER_AGENT}
 
     def get_error(self, code):
         """
