@@ -105,6 +105,7 @@ def pb_search_results_emails(ix, search):
 def main(argv=None):
 
     global search
+    global accounts
     global args
 
     # get the argument parser ready
@@ -115,6 +116,7 @@ def main(argv=None):
 
     parser.add_argument('-apikey', help="set the api key via command line")
     parser.add_argument('-search', help="search query")
+    parser.add_argument('-identity', help="search only accounts on identity service")
     parser.add_argument('-buckets', help="set which buckets to search")
     parser.add_argument('-limit', help="set the amount of results to show")
     parser.add_argument('-timeout', help="set the timeout value")
@@ -126,11 +128,11 @@ def main(argv=None):
     parser.add_argument('-download', help="download the specified item specified by its ID")
     parser.add_argument('-bucket', help="download from this bucket (must be specified with -download)")
     parser.add_argument('-name', help="set the filename to save the item as")
+    parser.add_argument('--exportaccounts', help="searches for a domain or email address to find leaked accounts.", action="store_true")
     parser.add_argument('--nopreview', help="do not show text preview snippets of search results", action="store_true")
     parser.add_argument('--view', help="show full contents of search results", action="store_true")
     parser.add_argument('--phonebook', help="set the search type to a phonebook search")
     parser.add_argument('--emails', help="show only emails from phonebook results", action="store_true")
-    parser.add_argument('--accounts', help="search only leaked accounts on identity service", action="store_true")
     parser.add_argument('--capabilities', help="show your account's capabilities", action="store_true")
     parser.add_argument('--stats', help="show stats of search results", action="store_true")
     parser.add_argument('--raw', help="show raw json", action="store_true")
@@ -138,13 +140,13 @@ def main(argv=None):
 
     # configure IX & the API key
     if 'INTELX_KEY' in os.environ:
-        if args.accounts:
+        if args.identity:
             ix = IdentityService(os.environ['INTELX_KEY'])
         else:
             ix = intelx(os.environ['INTELX_KEY'])
 
     elif args.apikey:
-        if args.accounts:
+        if args.identity:
             ix_identity = IdentityService(args.apikey)
         else:
             ix = intelx(args.apikey)
@@ -158,6 +160,52 @@ def main(argv=None):
 
     if len(sys.argv) < 2:
         print('Usage: intelx -search "riseup.net"')
+
+    if args.identity:
+
+        if not args.limit and not args.stats and not args.phonebook:
+            if not args.raw:
+                print(colored(f"[{rightnow()}] Limit argument not supplied, setting default to 10 results.", 'yellow'))
+            args.limit = 10
+
+        maxresults = 100
+        buckets = []
+        datefrom = ""
+        dateto = ""
+        sort = 4
+        media = 0
+        terminate = []
+
+        if args.limit:
+            maxresults = int(args.limit)
+        if args.buckets:
+            buckets = format_list(args.buckets)
+        if args.datefrom:
+            datefrom = args.datefrom
+        if args.dateto:
+            dateto = args.dateto
+            sort = 2  # sort by date
+        if args.sort:
+            sort = int(args.sort)
+        if args.media:
+            media = int(args.media)
+
+        if args.exportaccounts:
+            account = IdentityService.export_accounts(
+                    ix,
+                    args.identity,
+                    maxresults=maxresults,
+                    buckets=buckets,
+                    datefrom=datefrom,
+                    dateto=dateto,
+                    terminate=terminate
+            )
+            headers = ["User", "Password", "Password Type", "Source Short"]
+            data = []
+            for block in account:
+                for result in account[block]:
+                    data.append([result['user'], result['password'], result['passwordtype'], result['sourceshort']])
+            print(tabulate.tabulate(sorted(data), headers=headers, tablefmt="fancy_grid"))
 
     if args.search:
 
@@ -190,24 +238,6 @@ def main(argv=None):
             sort = int(args.sort)
         if args.media:
             media = int(args.media)
-
-        if args.accounts:
-            search = IdentityService.export_accounts(
-                    ix,
-                    args.search,
-                    maxresults=maxresults,
-                    buckets=buckets,
-                    # timeout=timeout,
-                    datefrom=datefrom,
-                    dateto=dateto,
-                    terminate=terminate
-            )
-            headers = ["User", "Password", "Password Type", "Source Short"]
-            data = []
-            for block in search:
-                for result in search[block]:
-                    data.append([result['user'], result['password'], result['passwordtype'], result['sourceshort']])
-            print(tabulate.tabulate(sorted(data), headers=headers, tablefmt="fancy_grid"))
 
         if not args.phonebook:
             search = search(
