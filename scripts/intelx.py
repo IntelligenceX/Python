@@ -191,6 +191,7 @@ def main(argv=None):
             media = int(args.media)
 
         if args.exportaccounts:
+            print(colored(f"[{rightnow()}] Starting account export of \"{args.identity}\".", 'green'))
             account = IdentityService.export_accounts(
                     ix,
                     args.identity,
