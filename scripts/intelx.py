@@ -9,7 +9,7 @@ import time
 import tabulate
 import argparse
 from intelxapi import intelx
-from pyintelx import IdentityService
+from intelx_identity import IdentityService
 from termcolor import colored
 from pygments import highlight
 from pygments.lexers import JsonLexer
