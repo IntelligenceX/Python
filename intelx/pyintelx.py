@@ -1,17 +1,7 @@
 import time
-# import inspect  # DEBUG
-# import logging  # DEBUG
-# import http.client # DEBUG
 from intelxapi import intelx
 import requests
 
-# http.client.HTTPConnection.debuglevel = 1  # DEBUG
-
-# logging.basicConfig()  # DEBUG
-# logging.getLogger().setLevel(logging.DEBUG)  # DEBUG
-# requests_log = logging.getLogger("requests.packages.urllib3")  # DEBUG
-# requests_log.setLevel(logging.DEBUG)  # DEBUG
-# requests_log.propagate = True  # DEBUG
 
 class IdentityService(intelx):
 
@@ -22,8 +12,6 @@ class IdentityService(intelx):
         self.PAUSE_BETWEEN_REQUESTS = 1
 
     def get_search_results(self, id, format=1, maxresults=100):
-        # frame = inspect.currentframe()  # DEBUG
-        # logging.debug('PYthon Function: %s PYthon Filename: %s PYthon Line Number: %s', frame.f_code.co_name, frame.f_code.co_filename, frame.f_lineno)  # DEBUG
         params = {'id': id, 'format': format, 'limit': maxresults}
         r = requests.get(self.API_ROOT + '/live/search/result',
                          params, headers=self.HEADERS)
@@ -34,8 +22,6 @@ class IdentityService(intelx):
 
     def idsearch(self, term, maxresults=100, buckets=[], timeout=5, datefrom="", dateto="",
                terminate=[], analyze=False, skip_invalid=False):
-        # frame = inspect.currentframe()  # DEBUG
-        # logging.debug('PYthon Function: %s PYthon Filename: %s PYthon Line Number: %s', frame.f_code.co_name, frame.f_code.co_filename, frame.f_lineno)  # DEBUG
         p = {
             "selector": term,
             "bucket": buckets,
@@ -71,8 +57,6 @@ class IdentityService(intelx):
         return {'records': results}
 
     def terminate_search(self, id):
-        # frame = inspect.currentframe()  # DEBUG
-        # logging.debug('PYthon Function: %s PYthon Filename: %s PYthon Line Number: %s', frame.f_code.co_name, frame.f_code.co_filename, frame.f_lineno)  # DEBUG
         p = {
             "id": id,
         }
@@ -84,8 +68,6 @@ class IdentityService(intelx):
             return (r.status_code, r.text)
 
     def export_accounts(self, term, datefrom=None, dateto=None, maxresults=10, buckets=[], terminate=None):
-        # frame = inspect.currentframe()  # DEBUG
-        # logging.debug('PYthon Function: %s PYthon Filename: %s PYthon Line Number: %s', frame.f_code.co_name, frame.f_code.co_filename, frame.f_lineno)  # DEBUG
         p = {
             "selector": term,
             "bucket": buckets,
