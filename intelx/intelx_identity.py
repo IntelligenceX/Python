@@ -20,7 +20,7 @@ class IdentityService(intelx):
         else:
             return r.status_code
 
-    def idsearch(self, term, maxresults=100, buckets=[], timeout=5, datefrom="", dateto="",
+    def idsearch(self, term, maxresults=100, buckets="", timeout=5, datefrom="", dateto="",
                terminate=[], analyze=False, skip_invalid=False):
         p = {
             "selector": term,
@@ -69,7 +69,7 @@ class IdentityService(intelx):
         else:
             return (r.status_code, r.text)
 
-    def export_accounts(self, term, datefrom=None, dateto=None, maxresults=10, buckets=[], terminate=None):
+    def export_accounts(self, term, datefrom=None, dateto=None, maxresults=10, buckets="", terminate=None):
         p = {
             "selector": term,
             "bucket": buckets,
