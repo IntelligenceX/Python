@@ -265,6 +265,35 @@ class intelx:
             return r.json()['id']
         else:
             return r.status_code
+    
+    def INTEL_EXPORT(self, id, start=1, end=1000, filename="sample"):
+        """
+        Export all file from search. Use this for direct data download All file in one time.
+
+        id search:
+        - Specifies search ID.
+
+        start option:
+        - start index of search
+        - default: 1
+
+        end option:
+        - end index of search
+        - default: 1000
+
+        filename option:
+        - Specify the name to save the file as (default: sample, extention alway is zip).
+        """
+        time.sleep(self.API_RATE_LIMIT)
+        h = {'x-key': self.API_KEY, 'User-Agent': self.USER_AGENT}
+        r = requests.get(f"{self.API_ROOT}/intelligent/search?id={id}&f={start}&l={end}", headers=h, stream=True)
+        if r.status_code == 200:
+            with open(f"{filename}.zip", "wb") as f:
+                f.write(r.content)
+                f.close()
+            return True
+        else:
+            return r.status_code
 
     def INTEL_SEARCH_RESULT(self, id, limit):
         """
