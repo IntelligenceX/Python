@@ -56,6 +56,9 @@ class IdentityService(intelx):
                 if (maxresults <= 0):
                     self.terminate_search(search_id)
                 done = True
+            if r['status'] == 3:
+                self.terminate_search(search_id)
+                done = True
         return {'records': results}
 
     def terminate_search(self, id):
